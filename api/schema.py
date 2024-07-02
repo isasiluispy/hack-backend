@@ -30,15 +30,16 @@ class Query(graphene.ObjectType):
         return results
 
     def resolve_vehicle_data(root, info):
-        url = 'https://zircon.datausa.io/api/data?measure=Commute%20Means%20by%20GenderCommute%20Means%20by%20Gender%20Moe&geo=01000US01000US&drilldowns=Vehicles%20Available'
+        url = 'https://zircon.datausa.io/api/data?measure=Commute%20Means%20by%20Gender&geo=01000US&drilldowns=Vehicles%20Available'
         response = requests.get(url)
         data = response.json()
         results = []
         for item in data['data']:
-            results.append(VehicleData(
-                vehicles_available=item['Vehicles Available'],
-                households=item['Households']
-            ))
+            if item['Year'] == '2021':  # Filter for the year 2021
+                results.append(VehicleData(
+                    vehicles_available=item['Vehicles Available'],
+                    households=item['Commute Means by Gender']  # Assuming 'Commute Means by Gender' represents households
+                ))
         return results
 
 schema = graphene.Schema(query=Query)
