@@ -48,3 +48,34 @@ docker stop <container_id>
 
 Replace `<container_id>` with the actual container ID.
 
+## Updating the Frontend Files
+
+To update the frontend files, follow these steps:
+
+1. In the frontend app, run the following command to build the Angular project:
+
+    ```sh
+    ng build
+    ```
+
+2. Move the resulting files to the appropriate directories in your Django project:
+
+    ```
+    your_django_project/
+    ├── static/
+    │   └── angular/  # Static files like JS, CSS, etc.
+    ├── templates/
+    │   └── angular/
+    │       └── index.html
+    ├── your_django_app/
+    ├── manage.py
+    └── ...
+    ```
+
+3. In the `index.html` file, replace every use of the CSS, JS, and image files with the Django static tag like this:
+
+    ```html
+    {% static 'angular/file_name' %}
+    ```
+
+This ensures that Django correctly serves the static files.
